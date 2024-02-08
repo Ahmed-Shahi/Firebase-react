@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className="App">
-      <SignUp/>
+      {/* <SignUp/> */}
       {/* RealTime DataBase */}
 
       {/* <h1>FIREBASE</h1>
