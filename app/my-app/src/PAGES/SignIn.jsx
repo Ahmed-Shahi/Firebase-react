@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { app } from '../FIREBASE-Config/Config'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Profile from './Profile';
@@ -15,12 +15,14 @@ export default function SignIn() {
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, username, password)
       .then((userCredential) => {
-        
+
         const user = userCredential.user;
         alert('Successfully Login')
         setUsername('');
         setPassword('');
+        localStorage.setItem('Email', username)
         navigate('/Profile')
+
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -28,17 +30,24 @@ export default function SignIn() {
         alert(error.errorMessage)
         setUsername('');
         setPassword('');
+
       });
 
   }
   return (
-    <div style={{ textAlign: 'center', marginTop: '100px' }}>
+    <div className='rounded-5 rounded-top-5 ' style={{
+      textAlign: 'center', marginTop: '30px'
+      , backgroundColor: 'rgba(255, 255, 255, 0.3)'
+      , height: '400px', color: 'black',
+      boxShadow: '20px 20px 30px  rgba(0, 0, 0, 0.3)' /* Adding more prominent shadow */
+    }}>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <h2>SIGN IN</h2>
       </div>
+      <br />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <input
-          className='form-control'
+          className='form-control rounded-pill'
           type="email"
           placeholder="Enter Email Here..."
           value={username}
@@ -48,7 +57,7 @@ export default function SignIn() {
       </div>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <input
-          className='form-control'
+          className='form-control rounded-pill'
           type="password"
           placeholder="Password"
           value={password}
@@ -56,8 +65,10 @@ export default function SignIn() {
           style={{ padding: '10px', margin: '10px', borderRadius: '5px', border: '1px solid #ccc', width: '300px' }}
         />
       </div>
+      <br />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <button
+        className='rounded-pill'
           onClick={handleLogin}
           style={{ padding: '10px 20px', margin: '10px', borderRadius: '5px', border: 'none', background: '#007bff', color: '#fff', cursor: 'pointer' }}
         >

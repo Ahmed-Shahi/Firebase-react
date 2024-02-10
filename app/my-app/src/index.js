@@ -7,6 +7,7 @@ import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import SignUp from './PAGES/SignUp';
 import SignIn from './PAGES/SignIn';
 import Profile from './PAGES/Profile';
+import Protected from './PAGES/Protected';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
