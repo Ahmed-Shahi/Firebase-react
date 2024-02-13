@@ -43,7 +43,6 @@ export default function SignIn() {
       const token = credential.accessToken;
       alert('Successfully Login')
       navigate('/Profile')
-      localStorage.setItem('Email', username)
 
 
       const user = result.user;
