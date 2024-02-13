@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { app } from '../FIREBASE-Config/Config'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword,GoogleAuthProvider ,signInWithPopup  } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 import { Link, useNavigate } from 'react-router-dom';
 // import './SignUp.css'    
 
 const db = getDatabase(app);
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
 
 function SignUp() {
     const [username, setUsername] = useState('');
@@ -35,9 +37,29 @@ function SignUp() {
                 setUsername('');
                 setPassword('');
             });
-
+        }
+        const handleGoogle = ()=>{
+            signInWithPopup(auth, provider)
+        .then((result) => {
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          alert('Successfully Login')
+          navigate('/Profile')
+          provider.setCustomParameters({
+            
+          });
+    
+          const user = result.user;
+        }).catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          const email = error.customData.email;
+          const credential = GoogleAuthProvider.credentialFromError(error);
+        });
+     }
+         
         // console.log('Logging in with:', username, password);
-    };
+
 
     return (
         <div >
@@ -85,11 +107,22 @@ function SignUp() {
                 {/* </Link> */}
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                {/* <Link to={'/SignIn'}>  */}
+                <button
+                    className='rounded-pill'
+                    onClick={handleGoogle}
+                    style={{ padding: '10px 20px', margin: '10px', borderRadius: '5px', border: 'none', background: '#007bff', color: '#fff', cursor: 'pointer' }}
+                >
+                    SIGN IN WITH GOOGLE
+                </button>
+                {/* </Link> */}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <h1 style={{ fontSize: "20px" }}>Have an Account??
                     <span><Link to={'/SignIn'} style={{ textDecoration: 'none' }}> Login </Link> </span> </h1>
             </div>
         </div>
         </div>
-    );
-}
+    )};
+    
 export default SignUp

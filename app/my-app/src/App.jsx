@@ -33,7 +33,7 @@ function App() {
 
       {/* <h1>FIREBASE</h1>
       <button onClick={main}>CLICK ME</button> */}
-  
+    <SignUp/>  
   
     </div>
   );

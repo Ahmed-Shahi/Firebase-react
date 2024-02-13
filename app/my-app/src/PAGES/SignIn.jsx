@@ -2,17 +2,20 @@ import React from 'react'
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { app } from '../FIREBASE-Config/Config'
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import Profile from './Profile';
+import { getAuth, signInWithEmailAndPassword,GoogleAuthProvider ,signInWithPopup } from "firebase/auth";
 
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 export default function SignIn() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate()
+  
+
   const handleLogin = () => {
+  
     signInWithEmailAndPassword(auth, username, password)
       .then((userCredential) => {
 
@@ -32,8 +35,26 @@ export default function SignIn() {
         setPassword('');
 
       });
+    }
+      const handleGoogle = ()=>{
+        signInWithPopup(auth, provider)
+    .then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      alert('Successfully Login')
+      navigate('/Profile')
+      localStorage.setItem('Email', username)
 
-  }
+
+      const user = result.user;
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.customData.email;
+      const credential = GoogleAuthProvider.credentialFromError(error);
+    });
+    }
+  
   return (
     <div className='rounded-5 rounded-top-5 ' style={{
       textAlign: 'center', marginTop: '30px'
@@ -75,6 +96,16 @@ export default function SignIn() {
           SIGN IN
         </button>
       </div>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <button
+        className='rounded-pill'
+          onClick={handleGoogle}
+          style={{ padding: '10px 20px', margin: '10px', borderRadius: '5px', border: 'none', background: '#007bff', color: '#fff', cursor: 'pointer' }}
+        >
+          SIGN IN With Google
+        </button>
+      </div>
+      
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <h1 style={{ fontSize: "20px" }}>Do not have an Account??
           <span
